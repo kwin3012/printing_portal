@@ -3,13 +3,24 @@
 
 {% block content %}
 <div class="jumbotron">
-    <h1 class="display-4">Welcome!</h1>
-    <p class="lead">This is a printing portal</p>
-    <hr class="my-4">
-    <p>Go ahead sign in or register to print your documents</p>
-    <p class="lead">
+    
+
+      {% if user.is_authenticated %}
+      <p>Hello {{user.username}}</p>
+      <hr class="my-4">
+      <p>go ahead and place new order or view your order history. </p>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Place Order</a>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Order History</a>
+      {% else %}
+      <h1 class="display-4">Welcome!</h1>
+      <p class="lead">This is a printing portal</p>
+      <hr class="my-4">
+      <p>Go ahead sign in or register to print your documents</p>
+      <p class="lead">
       <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
-      <a class="btn btn-primary btn-lg" href="#" role="button">Sign In</a>
+      <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign In</a>
+      {% endif %}
+
     </p>
   </div>
 {% endblock %}
