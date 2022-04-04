@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
+from users.models import Order
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import ValidationError
+
 
 class UserRegisterForm(UserCreationForm):
     class Meta:
@@ -12,3 +13,8 @@ class UserRegisterForm(UserCreationForm):
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField()
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['file','shopkeeper_email','no_of_copies','black_and_white']

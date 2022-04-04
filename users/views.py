@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from users.forms import UserRegisterForm,LoginForm
+from users.forms import UserRegisterForm,LoginForm,OrderForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout
@@ -52,6 +52,24 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect('home')
+
+@login_required
+def Place_Order(request):
+    print('hello')
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            print(form)
+        else:
+            messages.error(request,f'Somrthing went wrong!')
+
+    form = OrderForm()
+    print(form)
+    return render(request,'users/place_order.html',{'form':form})
+
+
+
+
 
     
 

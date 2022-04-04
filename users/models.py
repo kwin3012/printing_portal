@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User,AbstractBaseUser
-from django.forms import CharField, EmailField, FileField
 from django.utils import timezone
 
 
@@ -14,7 +13,7 @@ class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     # shop keeper info
-    shopkeeper_email = models.EmailField(max_length=100)
+    shopkeeper_email = models.EmailField(max_length=100,unique=True)
     shopkeeper_location = models.CharField(max_length=100)
 
     # file info
@@ -25,6 +24,8 @@ class Order(models.Model):
     #order details
     cost = models.IntegerField()
     date_ordered = models.DateTimeField(default=timezone.now)
+
+    
 
 
 

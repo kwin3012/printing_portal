@@ -1,0 +1,12 @@
+{% extends 'users/base.html' %}
+{% block title %}Place Order{% endblock %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+<form method='post'>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value = "submit">
+</form>
+
+{% endblock %}
