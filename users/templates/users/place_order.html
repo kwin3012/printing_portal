@@ -3,10 +3,10 @@
 {% block content %}
 
 {% load crispy_forms_tags %}
-<form method='post'>
+<form method='post' enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value = "submit">
+    <input type="submit" value = "submit" name="submit" >
 </form>
 
 {% endblock %}

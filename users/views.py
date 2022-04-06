@@ -2,8 +2,11 @@ from django.shortcuts import render,redirect
 from users.forms import UserRegisterForm,LoginForm,OrderForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from users.models import Order
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import default_storage
 
 # Create your views here.
 
@@ -55,16 +58,49 @@ def Logout(request):
 
 @login_required
 def Place_Order(request):
-    print('hello')
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        form = OrderForm(request.POST,request.FILES)
         if form.is_valid():
-            print(form)
+
+            if request.FILES['file']:
+                user_id = request.user.id
+                user = User.objects.get(id=user_id)
+
+                shopkeeper_email = form.cleaned_data.get('shopkeeper_email')
+                shopkeeper_location = shopkeeper_email
+
+                file = request.FILES['file']
+                fs = FileSystemStorage()
+                filename = fs.save(file.name,file)
+                file_url = fs.url(filename)
+
+                no_of_copies = form.cleaned_data.get('no_of_copies')
+                black_and_white = form.cleaned_data.get('black_and_white')
+
+                cost=100
+
+                order = Order(
+                    user=user,
+                    shopkeeper_email=shopkeeper_email,
+                    shopkeeper_location=shopkeeper_location,
+                    file=filename,
+                    no_of_copies=no_of_copies,
+                    black_and_white=black_and_white,
+                    cost=cost,
+                )
+
+                order.save()
+
+                messages.success(request,f'Order Placed Successfully!')
+                return redirect('home')
+            else:
+                messages.error(request,f'Unable to fetch file')
+
         else:
-            messages.error(request,f'Somrthing went wrong!')
+            print(form.errors)
+            messages.error(request,f'Something went wrong!')
 
     form = OrderForm()
-    print(form)
     return render(request,'users/place_order.html',{'form':form})
 
 
