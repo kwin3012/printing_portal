@@ -6,12 +6,11 @@
 {% for order in orders %}
 <li>
 <ul>
-    <li>{{ order.user.username }}</li>
-    <li>{{ order.user.email }}</li>
     <li>{{ order.file }}</li>
     <li>{{ order.no_of_copies }}</li>
     <li>{{ order.black_and_white }}</li>
     <li>{{ order.cost }}</li>
+    <li>{{ order.date_ordered }}</li>
     <br>
 </ul>
 </li>

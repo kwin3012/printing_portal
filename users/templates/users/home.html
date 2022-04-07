@@ -3,22 +3,20 @@
 
 {% block content %}
 <div class="jumbotron">
-    
-
+      
       {% if user.is_authenticated %}
-      <p>Hello {{user.username}}</p>
-      <hr class="my-4">
-      <p>go ahead and place new order or view your order history. </p>
-      <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>
-      <a class="btn btn-primary btn-lg" href="{% url 'order_history' %}" role="button">Order History</a>
+        <h1 class="display-4">Printing Portal</h1>
+        <hr class="my-4">
+        <p>Go ahead and place new orders or view your order history. </p>
+        <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'order_history' %}" role="button">Order History</a>
       {% else %}
-      <h1 class="display-4">Welcome!</h1>
-      <p class="lead">This is a printing portal</p>
-      <hr class="my-4">
-      <p>Go ahead sign in or register to print your documents</p>
-      <p class="lead">
-      <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
-      <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign In</a>
+        <h1 >Welcome to Printing Portal</h1>
+        <hr class="my-4">
+        <p>Go ahead register or sign in to print your documents quickly and safely.</p>
+        <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign In</a>
       {% endif %}
 
     </p>
