@@ -10,7 +10,7 @@
       <hr class="my-4">
       <p>go ahead and place new order or view your order history. </p>
       <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>
-      <a class="btn btn-primary btn-lg" href="#" role="button">Order History</a>
+      <a class="btn btn-primary btn-lg" href="{% url 'order_history' %}" role="button">Order History</a>
       {% else %}
       <h1 class="display-4">Welcome!</h1>
       <p class="lead">This is a printing portal</p>

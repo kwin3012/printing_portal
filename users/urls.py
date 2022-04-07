@@ -7,4 +7,5 @@ urlpatterns = [
     path('login/',views.Login,name='login'),
     path('logout/',views.Logout,name='logout'),
     path('place_order/',views.Place_Order,name='place_order'),
+    path('order_history/',views.Order_History,name='order_history')
 ]

@@ -1,0 +1,21 @@
+{% extends 'users/base.html' %}
+{% block title %}Order History{% endblock %}
+{% block content %}
+
+<ol>
+{% for order in orders %}
+<li>
+<ul>
+    <li>{{ order.user.username }}</li>
+    <li>{{ order.user.email }}</li>
+    <li>{{ order.file }}</li>
+    <li>{{ order.no_of_copies }}</li>
+    <li>{{ order.black_and_white }}</li>
+    <li>{{ order.cost }}</li>
+    <br>
+</ul>
+</li>
+{% endfor %}
+</ol>
+
+{% endblock %}

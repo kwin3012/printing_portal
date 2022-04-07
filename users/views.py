@@ -6,7 +6,6 @@ from users.models import Order
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.core.files.storage import default_storage
 
 # Create your views here.
 
@@ -102,6 +101,15 @@ def Place_Order(request):
 
     form = OrderForm()
     return render(request,'users/place_order.html',{'form':form})
+
+@login_required
+def Order_History(request):
+    user_id = request.user.id
+    user = User.objects.get(id=user_id)
+    orders = Order.objects.filter(user=user).order_by('-date_ordered')
+    return render(request,'users/order_history.html',{'orders':orders})
+
+    
 
 
 
