@@ -66,7 +66,7 @@ def Place_Order(request):
                 user = User.objects.get(id=user_id)
 
                 shopkeeper_email = form.cleaned_data.get('shopkeeper_email')
-                shopkeeper_location = shopkeeper_email
+                shopkeeper_location = form.cleaned_data.get('shopkeeper_location')
 
                 file = request.FILES['file']
                 fs = FileSystemStorage()

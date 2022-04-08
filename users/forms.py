@@ -17,4 +17,4 @@ class LoginForm(forms.Form):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['file','shopkeeper_email','no_of_copies','black_and_white']
+        fields = ['file','shopkeeper_email','shopkeeper_location','no_of_copies','black_and_white']
