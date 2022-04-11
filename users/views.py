@@ -123,6 +123,17 @@ def Order_History(request):
     orders = Order.objects.filter(user=user).order_by('-date_ordered')
     return render(request,'users/order_history.html',{'orders':orders})
 
+@login_required
+def Recent_Orders(request):
+    shopkeeper_email = request.user.email
+    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email).order_by('date_ordered')
+    
+    return render(request,'users/recent_orders.html',{'orders':shopkeepers_orders})
+
+
+    
+
+
     
 
 
