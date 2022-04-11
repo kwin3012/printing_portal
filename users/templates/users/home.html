@@ -7,9 +7,15 @@
       {% if user.is_authenticated %}
         <h1 class="display-4">Printing Portal</h1>
         <hr class="my-4">
-        <p>Go ahead and place new orders or view your order history. </p>
-        <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>
-        <a class="btn btn-primary btn-lg" href="{% url 'order_history' %}" role="button">Order History</a>
+        {% if user.is_staff %}
+          <p>Check your Recent Orders and Print It!!!</p>
+          <a class="btn btn-primary btn-lg" href="#" role="button">Recent Orders</a>
+          <a class="btn btn-primary btn-lg" href="#" role="button">Orders Completed</a>
+        {% else %}
+          <p>Go ahead and place new orders or view your order history. </p>
+          <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'order_history' %}" role="button">Order History</a>
+        {% endif %}
       {% else %}
         <h1 >Welcome to Printing Portal</h1>
         <hr class="my-4">

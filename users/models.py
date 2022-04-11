@@ -4,7 +4,6 @@ from django.utils import timezone
 
 # Create your models here.
 
-
 class Order(models.Model):
     # user info
     user = models.ForeignKey(User,on_delete=models.CASCADE)

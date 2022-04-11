@@ -21,6 +21,13 @@ def Register(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
+
+            #check for shopkeeper
+            email = form.cleaned_data['email']
+            if shops.get(email) is not None:
+                user.is_staff = True
+                user.save()
+
             messages.success(request,f'Successfully Register!')
             return redirect('home')
         else:
