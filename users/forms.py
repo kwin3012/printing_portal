@@ -2,6 +2,12 @@ from django.contrib.auth.models import User
 from users.models import Order
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from users import shopkeepers
+
+shops = shopkeepers.shops
+SHOPS = []
+for key,value in shops.items():
+    SHOPS.append((value,value))
 
 
 class UserRegisterForm(UserCreationForm):
@@ -15,6 +21,7 @@ class LoginForm(forms.Form):
     password = forms.CharField()
 
 class OrderForm(forms.ModelForm):
+    shopkeeper_location = forms.ChoiceField(choices=SHOPS)
     class Meta:
         model = Order
-        fields = ['file','shopkeeper_email','shopkeeper_location','no_of_copies','black_and_white']
+        fields = ['file','shopkeeper_location','no_of_copies','black_and_white']

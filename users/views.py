@@ -6,6 +6,9 @@ from users.models import Order
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+from users import shopkeepers
+
+shops = shopkeepers.shops
 
 # Create your views here.
 
@@ -65,8 +68,12 @@ def Place_Order(request):
                 user_id = request.user.id
                 user = User.objects.get(id=user_id)
 
-                shopkeeper_email = form.cleaned_data.get('shopkeeper_email')
+            
                 shopkeeper_location = form.cleaned_data.get('shopkeeper_location')
+                for key,value in shops.items():
+                    if value==shopkeeper_location:
+                        shopkeeper_email=key
+                        break
 
                 file = request.FILES['file']
                 fs = FileSystemStorage()
