@@ -20,6 +20,7 @@ class Order(models.Model):
     #order details
     cost = models.IntegerField()
     date_ordered = models.DateTimeField(default=timezone.now)
+    printing_status = models.BooleanField(default=False)
 
 
     

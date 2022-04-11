@@ -1,3 +1,4 @@
+from cmath import log
 from django.shortcuts import render,redirect
 from users.forms import UserRegisterForm,LoginForm,OrderForm
 from django.contrib import messages
@@ -129,6 +130,17 @@ def Recent_Orders(request):
     shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email).order_by('date_ordered')
     
     return render(request,'users/recent_orders.html',{'orders':shopkeepers_orders})
+    
+@login_required
+def Status_Change(request,order_id):
+    order = Order.objects.get(id=order_id)
+    order.printing_status = True
+    order.save()
+
+    messages.success(request,f'We will inform {order.user.username} to collects his/her documents!')
+    return redirect('recent_orders')
+
+
 
 
     

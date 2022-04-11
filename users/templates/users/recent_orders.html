@@ -6,15 +6,20 @@
 {% for order in orders %}
 <li>
 <ul>
-    <li>{{ order.file }}</li>
-    <li>{{ order.user.username }}</li>
-    <li>{{ order.user.email }}</li>
-    <li>{{ order.black_and_white }}</li>
-    <li>{{ order.cost }}</li>
-    <li>{{ order.date_ordered }}</li>
+    <li>file:{{ order.file }}</li>
+    <li>customer name:{{ order.user.username }}</li>
+    <li>customer email:{{ order.user.email }}</li>
+    <li>print:{{ order.black_and_white }}</li>
+    <li>Amount Paid{{ order.cost }}</li>
+    <li>Date Ordered:{{ order.date_ordered }}</li>
+    <li>printing status:{{ order.printing_status }}</li>
+    {% if order.printing_status is False %}
+        <a class="btn btn-primary btn-lg" href="{% url 'status_change' order.id %}" role="button">Change Printing Status</a>
+    {% endif %}
     <br>
 </ul>
 </li>
+
 {% endfor %}
 </ol>
 
