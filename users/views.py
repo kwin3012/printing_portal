@@ -127,7 +127,7 @@ def Order_History(request):
 @login_required
 def Recent_Orders(request):
     shopkeeper_email = request.user.email
-    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email).order_by('date_ordered')
+    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=False).order_by('date_ordered')
     
     return render(request,'users/recent_orders.html',{'orders':shopkeepers_orders})
     
@@ -139,6 +139,15 @@ def Status_Change(request,order_id):
 
     messages.success(request,f'We will inform {order.user.username} to collects his/her documents!')
     return redirect('recent_orders')
+
+
+@login_required
+def Printed_Orders(request):
+    shopkeeper_email = request.user.email
+    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=True).order_by('date_ordered')
+    
+    return render(request,'users/printed_orders.html',{'orders':shopkeepers_orders})
+
 
 
 

@@ -1,0 +1,23 @@
+{% extends 'users/base.html' %}
+{% block title %}Printed Orders{% endblock %}
+{% block content %}
+
+<ol>
+{% for order in orders %}
+<li>
+<ul>
+    <li>file:{{ order.file }}</li>
+    <li>customer name:{{ order.user.username }}</li>
+    <li>customer email:{{ order.user.email }}</li>
+    <li>print:{{ order.black_and_white }}</li>
+    <li>Amount Paid{{ order.cost }}</li>
+    <li>Date Ordered:{{ order.date_ordered }}</li>
+    <li>printing status:{{ order.printing_status }}</li>
+    <br>
+</ul>
+</li>
+
+{% endfor %}
+</ol>
+
+{% endblock %}
