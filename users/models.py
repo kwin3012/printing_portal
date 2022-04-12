@@ -22,6 +22,12 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(default=timezone.now)
     printing_status = models.BooleanField(default=False)
 
+    otp = models.IntegerField(default=0)
+    completed_status = models.BooleanField(default=False)
+
+
+
+
 
     
 

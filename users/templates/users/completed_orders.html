@@ -1,10 +1,9 @@
 {% extends 'users/base.html' %}
-{% block title %}Printed Orders{% endblock %}
+{% block title %}Completed Orders{% endblock %}
 {% block content %}
 
 <ol>
 {% for order in orders %}
-{% if order.completed_status is False %}
 <li>
 <ul>
     <li>file:{{ order.file }}</li>
@@ -13,19 +12,10 @@
     <li>print:{{ order.black_and_white }}</li>
     <li>Amount Paid{{ order.cost }}</li>
     <li>Date Ordered:{{ order.date_ordered }}</li>
-    <li>printing status:{{ order.printing_status }}</li>
-    
-    <form action="{% url 'check_otp' order.id %}" method='post'>
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value = "submit">
-    </form>
-  
-
     <br>
 </ul>
 </li>
-{% endif %}
+
 {% endfor %}
 </ol>
 

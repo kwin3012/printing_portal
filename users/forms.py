@@ -25,3 +25,6 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['file','shopkeeper_location','no_of_copies','black_and_white']
+
+class OTPForm(forms.Form):
+    otp = forms.IntegerField()

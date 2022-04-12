@@ -11,7 +11,7 @@
           <p>Check your Recent Orders and Print It!!!</p>
           <a class="btn btn-primary btn-lg" href="{% url 'recent_orders' %}" role="button">Recent Orders</a>
           <a class="btn btn-primary btn-lg" href="{% url 'printed_orders' %}" role="button">Printed Orders</a>
-          <a class="btn btn-primary btn-lg" href="#" role="button">Completed Orders</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'completed_orders' %}" role="button">Completed Orders</a>
         {% else %}
           <p>Go ahead and place new orders or view your order history. </p>
           <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>

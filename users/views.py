@@ -1,6 +1,6 @@
 from cmath import log
 from django.shortcuts import render,redirect
-from users.forms import UserRegisterForm,LoginForm,OrderForm
+from users.forms import UserRegisterForm,LoginForm,OrderForm,OTPForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from users.models import Order
@@ -8,6 +8,7 @@ from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from users import shopkeepers
+from random import randint
 
 shops = shopkeepers.shops
 
@@ -93,6 +94,9 @@ def Place_Order(request):
 
                 cost=100
 
+                #generating 6 digit random otp
+                otp = randint(100000,999999)
+
                 order = Order(
                     user=user,
                     shopkeeper_email=shopkeeper_email,
@@ -101,6 +105,7 @@ def Place_Order(request):
                     no_of_copies=no_of_copies,
                     black_and_white=black_and_white,
                     cost=cost,
+                    otp=otp,
                 )
 
                 order.save()
@@ -143,10 +148,34 @@ def Status_Change(request,order_id):
 
 @login_required
 def Printed_Orders(request):
+    form = OTPForm
     shopkeeper_email = request.user.email
     shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=True).order_by('date_ordered')
     
-    return render(request,'users/printed_orders.html',{'orders':shopkeepers_orders})
+    return render(request,'users/printed_orders.html',{'orders':shopkeepers_orders,'form':form})
+
+def Check_OTP(request,order_id):
+    if request.method == "POST":
+        form = OTPForm(request.POST)
+        if form.is_valid():
+            otp = form.cleaned_data.get('otp')
+            order = Order.objects.get(id=order_id)
+            if order.otp == otp:
+                order.completed_status = True
+                order.save()
+                messages.success(request,f'Congratualations You have completed an order id {order.id}!')
+            else:
+                messages.error(request,f'The OTP did not matched got Order id {order.id}.')
+        else:
+            messages.error(request,f'Something went wrong!')
+        return redirect('printed_orders')
+
+def Completed_Orders(request):
+    shopkeeper_email = request.user.email
+    orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,completed_status=True)
+    return render(request,'users/completed_orders.html',{'orders':orders})
+    
+
 
 
 
