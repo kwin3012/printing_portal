@@ -7,6 +7,7 @@ from users.models import Order
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+from django.http import FileResponse
 from users import shopkeepers
 from random import randint
 
@@ -174,6 +175,15 @@ def Completed_Orders(request):
     shopkeeper_email = request.user.email
     orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,completed_status=True)
     return render(request,'users/completed_orders.html',{'orders':orders})
+
+def Download(request,order_id):
+    order = Order.objects.get(id=order_id)
+    filename = order.file.path
+    print(filename)
+    response = FileResponse(open(filename, 'rb'))
+    return response
+
+
     
 
 

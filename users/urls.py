@@ -13,4 +13,5 @@ urlpatterns = [
     path('printed_orders/',views.Printed_Orders,name='printed_orders'),
     path('check_otp/<int:order_id>',views.Check_OTP,name='check_otp'),
     path('completed_orders/',views.Completed_Orders,name='completed_orders'),
+    path('download/<int:order_id>',views.Download,name='download'),
 ]

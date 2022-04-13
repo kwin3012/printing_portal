@@ -13,9 +13,9 @@
     <li>Amount Paid{{ order.cost }}</li>
     <li>Date Ordered:{{ order.date_ordered }}</li>
     <li>printing status:{{ order.printing_status }}</li>
-    {% if order.printing_status is False %}
-        <a class="btn btn-primary btn-lg" href="{% url 'status_change' order.id %}" role="button">Change Printing Status</a>
-    {% endif %}
+    <a class="btn btn-primary btn-lg" href="{% url 'download' order.id %}" role="button">Download File</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'status_change' order.id %}" role="button">Change Printing Status</a>
+   
     <br>
 </ul>
 </li>
