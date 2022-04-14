@@ -2,22 +2,22 @@
 {% block title %}Order History{% endblock %}
 {% block content %}
 
-<ol>
 {% for order in orders %}
-<li>
-<ul>
-    <li>{{ order.file }}</li>
-    <li>{{ order.no_of_copies }}</li>
-    <li>{{ order.black_and_white }}</li>
-    <li>{{ order.cost }}</li>
-    <li>{{ order.date_ordered }}</li>
-    <li>{{ order.shopkeeper_location }}</li>
-    <li>{{ order.shopkeeper_email }}</li>
-    <li>{{ order.otp }}</li>
+<div class="jumbotron" >
+    <h3>Date Ordered : {{ order.date_ordered }}</h3>
+    <strong>To : </strong>{{ order.shopkeeper_email }}<br>
+    <strong>Location : </strong>{{ order.shopkeeper_location }}<br>
+    <strong>No of copies : </strong>{{ order.no_of_copies }}<br>
+    <strong>Print Color : </strong>
+    {% if order.black_and_white %}
+        BLACK and WHITE
+    {% else %}
+        COLOR
+    {% endif %}
     <br>
-</ul>
-</li>
+    <strong>Amount Paid : </strong>{{ order.cost }}<br>
+    <strong>OTP : </strong>{{ order.otp }}<br>
+</div>
 {% endfor %}
-</ol>
 
 {% endblock %}

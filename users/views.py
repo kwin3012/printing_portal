@@ -96,7 +96,8 @@ def Place_Order(request):
                 cost=100
 
                 #generating 6 digit random otp
-                otp = randint(100000,999999)
+                # otp = randint(100000,999999)
+                otp=1
 
                 order = Order(
                     user=user,
