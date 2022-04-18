@@ -11,6 +11,10 @@ from django.http import FileResponse
 from users import shopkeepers
 from random import randint
 from PyPDF2 import PdfFileMerger
+from django.conf import settings
+from reportlab.pdfgen import canvas 
+from reportlab.pdfbase import pdfmetrics
+import os
 
 shops = shopkeepers.shops
 
@@ -87,18 +91,29 @@ def Place_Order(request):
                         break
 
                 file = request.FILES['file']
-                fs = FileSystemStorage()
-                filename = fs.save(file.name,file)
-                file_url = fs.url(filename)
-                print("HEllo")
-                print(file_url)
-
                 no_of_copies = form.cleaned_data.get('no_of_copies')
                 black_and_white = form.cleaned_data.get('black_and_white')
 
+                
+                # costumer_indentification_pdf
+                os.chdir(settings.MEDIA_ROOT)
+                pdf_name = user.email + ".pdf"
+                pdf = canvas.Canvas(pdf_name)
+                pdf.setFont("Courier-Bold", 36)
+                pdf.drawCentredString(300, 590, user.username)
+                pdf.setFont("Courier-Bold", 24)
+                pdf.drawCentredString(290,500, user.email)
+                pdf.save()
+                
                 merger = PdfFileMerger()
                 merger.append(file)
+                merger.append(pdf_name)
                 no_of_pages = len(merger.pages)
+
+                order_number = len(Order.objects.filter(user=user))
+                new_file_name = user.email + str(order_number + 1) + ".pdf"
+                merger.write(new_file_name)
+                merger.close()
 
                 BLACK_WHITE_COST = 1
                 COLOR_COST = 10
@@ -117,7 +132,7 @@ def Place_Order(request):
                     user=user,
                     shopkeeper_email=shopkeeper_email,
                     shopkeeper_location=shopkeeper_location,
-                    file=filename,
+                    file=new_file_name,
                     no_of_copies=no_of_copies,
                     black_and_white=black_and_white,
                     cost=cost,
