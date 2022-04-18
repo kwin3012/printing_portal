@@ -93,9 +93,9 @@ def Place_Order(request):
                 file = request.FILES['file']
                 no_of_copies = form.cleaned_data.get('no_of_copies')
                 black_and_white = form.cleaned_data.get('black_and_white')
-
                 
-                # costumer_indentification_pdf
+                # this block code create a single page pdf which contains the name and email
+                # of user so that shopkeeper correctly indentifies the pdf at the time of completion.
                 os.chdir(settings.MEDIA_ROOT)
                 pdf_name = user.email + ".pdf"
                 pdf = canvas.Canvas(pdf_name)
@@ -110,7 +110,9 @@ def Place_Order(request):
                 merger.append(pdf_name)
                 no_of_pages = len(merger.pages)
 
-                order_number = len(Order.objects.filter(user=user))
+                # the order number over here will not be seen to the user and for shopkeepr it will shown
+                # but kind of useless. Differentiating filename just help the system to store each uniquely. 
+                order_number = len(Order.objects.all())
                 new_file_name = user.email + str(order_number + 1) + ".pdf"
                 merger.write(new_file_name)
                 merger.close()
@@ -128,11 +130,13 @@ def Place_Order(request):
                 # otp = randint(100000,999999)
                 otp=1
 
+                # the file name attribute is just for reference for user in order history.
                 order = Order(
                     user=user,
                     shopkeeper_email=shopkeeper_email,
                     shopkeeper_location=shopkeeper_location,
                     file=new_file_name,
+                    file_name = file.name,
                     no_of_copies=no_of_copies,
                     black_and_white=black_and_white,
                     cost=cost,

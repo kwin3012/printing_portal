@@ -14,6 +14,7 @@ class Order(models.Model):
 
     # file info
     file = models.FileField(blank=False,upload_to='media/')
+    file_name = models.CharField(max_length=100,default="file.pdf")
     no_of_copies = models.IntegerField(default=1)
     black_and_white = models.BooleanField(default=True)
 

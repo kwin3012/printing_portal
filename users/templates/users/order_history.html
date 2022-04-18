@@ -4,7 +4,9 @@
 
 {% for order in orders %}
 <div class="jumbotron" >
-    <h3>Date Ordered : {{ order.date_ordered }}</h3>
+    <h3>Order Id : {{ order.id }}</h3>
+    <strong>Date Ordered : </strong>{{ order.date_ordered }}<br>
+    <strong>File name: </strong>{{ order.file_name }}<br>
     <strong>To : </strong>{{ order.shopkeeper_email }}<br>
     <strong>Location : </strong>{{ order.shopkeeper_location }}<br>
     <strong>No of copies : </strong>{{ order.no_of_copies }}<br>
@@ -16,6 +18,7 @@
     {% endif %}
     <br>
     <strong>Amount Paid : </strong>{{ order.cost }}<br>
+    <strong>Collected Status : </strong>{{ order.completed_status }}<br>
     <strong>OTP : </strong>{{ order.otp }}<br>
 </div>
 {% endfor %}
