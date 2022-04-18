@@ -10,6 +10,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse
 from users import shopkeepers
 from random import randint
+from PyPDF2 import PdfFileMerger
 
 shops = shopkeepers.shops
 
@@ -89,11 +90,24 @@ def Place_Order(request):
                 fs = FileSystemStorage()
                 filename = fs.save(file.name,file)
                 file_url = fs.url(filename)
+                print("HEllo")
+                print(file_url)
 
                 no_of_copies = form.cleaned_data.get('no_of_copies')
                 black_and_white = form.cleaned_data.get('black_and_white')
 
-                cost=100
+                merger = PdfFileMerger()
+                merger.append(file)
+                no_of_pages = len(merger.pages)
+
+                BLACK_WHITE_COST = 1
+                COLOR_COST = 10
+
+                if black_and_white:
+                    cost=BLACK_WHITE_COST
+                else:
+                    cost=COLOR_COST
+                cost = cost*no_of_copies*no_of_pages
 
                 #generating 6 digit random otp
                 # otp = randint(100000,999999)
@@ -156,6 +170,7 @@ def Printed_Orders(request):
     
     return render(request,'users/printed_orders.html',{'orders':shopkeepers_orders,'form':form})
 
+@login_required
 def Check_OTP(request,order_id):
     if request.method == "POST":
         form = OTPForm(request.POST)
@@ -172,11 +187,13 @@ def Check_OTP(request,order_id):
             messages.error(request,f'Something went wrong!')
         return redirect('printed_orders')
 
+@login_required
 def Completed_Orders(request):
     shopkeeper_email = request.user.email
     orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,completed_status=True)
     return render(request,'users/completed_orders.html',{'orders':orders})
 
+@login_required
 def Download(request,order_id):
     order = Order.objects.get(id=order_id)
     filename = order.file.path
