@@ -185,7 +185,7 @@ def Status_Change(request,order_id):
 def Printed_Orders(request):
     form = OTPForm
     shopkeeper_email = request.user.email
-    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=True).order_by('date_ordered')
+    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=True,completed_status=False).order_by('date_ordered')
     
     return render(request,'users/printed_orders.html',{'orders':shopkeepers_orders,'form':form})
 
@@ -222,7 +222,7 @@ def Download(request,order_id):
         response = FileResponse(open(filepath, 'rb'))
         return response
     else:
-        messages.error(request,f'Document Not Found!')
+        messages.error(request,f'Document Not Found for Order Id {order.id}')
         return redirect('recent_orders')
 
 

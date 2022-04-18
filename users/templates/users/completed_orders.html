@@ -2,21 +2,28 @@
 {% block title %}Completed Orders{% endblock %}
 {% block content %}
 
-<ol>
-{% for order in orders %}
-<li>
-<ul>
-    <li>file:{{ order.file }}</li>
-    <li>customer name:{{ order.user.username }}</li>
-    <li>customer email:{{ order.user.email }}</li>
-    <li>print:{{ order.black_and_white }}</li>
-    <li>Amount Paid{{ order.cost }}</li>
-    <li>Date Ordered:{{ order.date_ordered }}</li>
-    <br>
-</ul>
-</li>
 
+{% for order in orders %}
+<div class="jumbotron" >
+
+    <h3>Order Id : {{ order.id }}</h3>
+    <strong>Date Ordered : </strong>{{ order.date_ordered }}<br>
+    <strong>File name: </strong>{{ order.file }}<br>
+    <strong>customer name: </strong>{{ order.user.username }}<br>
+    <strong>customer email: </strong>{{ order.user.email }}<br>
+    <strong>No of copies : </strong>{{ order.no_of_copies }}<br>
+    <strong>Print Color : </strong>
+    {% if order.black_and_white %}
+        BLACK and WHITE
+    {% else %}
+        COLOR
+    {% endif %}
+    <br>
+    <strong>Amount Paid: </strong>{{ order.cost }}<br>
+    <strong>Printing Status: </strong>{{ order.printing_status }}<br>
+    
+
+</div>
 {% endfor %}
-</ol>
 
 {% endblock %}
