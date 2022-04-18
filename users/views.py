@@ -211,10 +211,15 @@ def Completed_Orders(request):
 @login_required
 def Download(request,order_id):
     order = Order.objects.get(id=order_id)
-    filename = order.file.path
-    print(filename)
-    response = FileResponse(open(filename, 'rb'))
-    return response
+    filepath = order.file.path
+    os.chdir(settings.MEDIA_ROOT)
+    if os.path.exists(filepath):
+        print(filepath)
+        response = FileResponse(open(filepath, 'rb'))
+        return response
+    else:
+        messages.error(request,f'Document Not Found!')
+        return redirect('recent_orders')
 
 
     
