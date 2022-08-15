@@ -26,6 +26,10 @@ class Order(models.Model):
     otp = models.IntegerField(default=0)
     completed_status = models.BooleanField(default=False)
 
+    #payment details
+    payment_id = models.CharField(default='0000000000',max_length=100)
+    payment_status = models.BooleanField(default=False)
+
 
 
 

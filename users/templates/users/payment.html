@@ -1,0 +1,36 @@
+{% extends "users/base.html" %}
+{% block content %}
+	<div class="col-6 mx-auto" >
+		<div class="text-center mt-5">
+			<img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/12/IIT_Guwahati_Logo.svg/220px-IIT_Guwahati_Logo.svg.png" style="height: 200px;margin-bottom: 20px;" >
+			
+            <form method="post" >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-block" style="margin-bottom: 20px;">Proceed To Pay</button>
+            </form>
+		</div>
+		
+	</div>
+	{% if payment %}
+		<div class="text-center mx-auto">
+            <h2>Amount To be paid: {{ payment.amount }}</h2>
+			<form action="success/" method="POST">
+				<script
+				src="https://checkout.razorpay.com/v1/checkout.js"
+				data-key="rzp_test_urhl6pBK884i2u" 
+				data-amount="{{ payment.amount }}"
+				data-currency="INR"
+				data-order_id="{{ payment.id }}"
+				data-buttontext="Pay with Razorpay"
+				data-name="Printing Portal"
+				data-description="Hey! pay to process your order further."
+				data-image="https://example.com/your_logo.jpg"
+				data-prefill.name="{{ user.name }}"
+				data-prefill.email="{{ user.email }}"
+				data-theme.color="#528FF0"
+				></script>
+				<input type="hidden" custom="Hidden Element" name="hidden">
+			</form>
+		</div>
+	{% endif %}
+{% endblock %}

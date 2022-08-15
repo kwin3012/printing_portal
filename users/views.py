@@ -1,8 +1,9 @@
 from cmath import log
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponseRedirect
 from users.forms import UserRegisterForm,LoginForm,OrderForm,OTPForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.urls import reverse
 from users.models import Order
 from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
@@ -14,7 +15,10 @@ from PyPDF2 import PdfFileMerger
 from django.conf import settings
 from reportlab.pdfgen import canvas 
 from reportlab.pdfbase import pdfmetrics
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import os
+import razorpay
 
 shops = shopkeepers.shops
 
@@ -145,8 +149,9 @@ def Place_Order(request):
 
                 order.save()
 
-                messages.success(request,f'Order Placed Successfully!')
-                return redirect('home')
+                return HttpResponseRedirect(reverse('gateway'))
+                # messages.success(request,f'Order Placed Successfully!')
+                # return redirect('home')
             else:
                 messages.error(request,f'Unable to fetch file')
 
@@ -156,6 +161,33 @@ def Place_Order(request):
 
     form = OrderForm()
     return render(request,'users/place_order.html',{'form':form})
+
+def gateway(request):
+    if request.method == "POST":
+        email = request.user.email
+        order = Order.objects.filter(user=request.user).last()
+        cost = order.cost*100
+        client = razorpay.Client(auth = (settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+        payment = client.order.create({'amount':cost, 'currency': 'INR', 'payment_capture':'1'})
+        order.payment_id = payment['id']
+        order.save()
+        return render(request,'users/payment.html',{'payment':payment,'user':request.user})
+    return render(request,'users/payment.html')
+
+
+@csrf_exempt
+def success(request):
+    if request.method == "POST":
+        a = request.POST
+        for key, val in a.items():
+            if key == "razorpay_order_id":
+                order_id = val
+                break
+        order = Order.objects.filter(payment_id = order_id).first()
+        order.payment_status = True
+        order.save()
+        messages.success(request,f'Your order has been placed.')
+    return render(request, 'users/success.html')
 
 @login_required
 def Order_History(request):
@@ -224,6 +256,8 @@ def Download(request,order_id):
     else:
         messages.error(request,f'Document Not Found for Order Id {order.id}')
         return redirect('recent_orders')
+
+
 
 
     

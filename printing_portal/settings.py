@@ -143,3 +143,6 @@ MESSAGE_TAGS = {
         messages.WARNING: 'alert-warning',
         messages.ERROR: 'alert-danger',
  }
+
+RAZOR_KEY_ID = "rzp_test_urhl6pBK884i2u"
+RAZOR_KEY_SECRET = "EHEJpTmYF6g2iqMrfdvyR9mU"
