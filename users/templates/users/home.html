@@ -15,6 +15,7 @@
         {% else %}
           <p>Go ahead and place new orders or view your order history. </p>
           <a class="btn btn-primary btn-lg" href="{% url 'place_order' %}" role="button">Place Order</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'order_pending' %}" role="button">Order Pending</a>
           <a class="btn btn-primary btn-lg" href="{% url 'order_history' %}" role="button">Order History</a>
         {% endif %}
       {% else %}

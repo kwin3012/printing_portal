@@ -191,10 +191,13 @@ def success(request):
 
 @login_required
 def Order_History(request):
-    user_id = request.user.id
-    user = User.objects.get(id=user_id)
-    orders = Order.objects.filter(user=user).order_by('-date_ordered')
+    orders = Order.objects.filter(user=request.user,payment_status=True).order_by('-date_ordered')
     return render(request,'users/order_history.html',{'orders':orders})
+
+@login_required
+def Order_Pending(request):
+    orders = Order.objects.filter(user=request.user,payment_status=False).order_by('-date_ordered')
+    return render(request,'users/order_pending.html',{'orders':orders})
 
 @login_required
 def Recent_Orders(request):

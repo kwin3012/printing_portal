@@ -1,0 +1,24 @@
+{% extends 'users/base.html' %}
+{% block title %}Order Pending{% endblock %}
+{% block content %}
+
+{% for order in orders %}
+<div class="jumbotron" >
+    <h3>Order Id : {{ order.id }}</h3>
+    <strong>Date Ordered : </strong>{{ order.date_ordered }}<br>
+    <strong>File name: </strong>{{ order.file_name }}<br>
+    <strong>To : </strong>{{ order.shopkeeper_email }}<br>
+    <strong>Location : </strong>{{ order.shopkeeper_location }}<br>
+    <strong>No of copies : </strong>{{ order.no_of_copies }}<br>
+    <strong>Print Color : </strong>
+    {% if order.black_and_white %}
+        BLACK and WHITE
+    {% else %}
+        COLOR
+    {% endif %}
+    <br>
+    <strong>Amount To be Paid : </strong>{{ order.cost }}<br>
+</div>
+{% endfor %}
+
+{% endblock %}
