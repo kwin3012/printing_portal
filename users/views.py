@@ -20,6 +20,10 @@ from django.conf import settings
 import os
 import razorpay
 
+import smtplib , time
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 shops = shopkeepers.shops
 
 # Create your views here.
@@ -215,13 +219,27 @@ def Order_Pending(request):
 @login_required
 def Recent_Orders(request):
     shopkeeper_email = request.user.email
-    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=False).order_by('date_ordered')
+    shopkeepers_orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,printing_status=False,payment_status=True).order_by('date_ordered')
     
     return render(request,'users/recent_orders.html',{'orders':shopkeepers_orders})
     
 @login_required
 def Status_Change(request,order_id):
     order = Order.objects.get(id=order_id)
+
+    # for sending email to the customer.
+    s = smtplib.SMTP("smtp-mail.outlook.com",587)
+    s.starttls()
+    s.login("PrintingPortal.IITG@outlook.com","Printingdocuments@123")
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "DOCUMENTS PRINTED!"
+    msg["From"] = "PrintingPortal.IITG@outlook.com"
+    msg["To"] = order.user.email
+    text = f"HEY {order.user.username}! Your documents: {order.file_name}, uploaded to us has been printed. Kindly Collect them using this as OTP: {order.otp}"
+    msg.attach(MIMEText(text,"plain"))
+    s.sendmail("PrintingPortal.IITG@outlook.com",order.user.email, msg.as_string())
+    s.quit()
+
     order.printing_status = True
     order.save()
 
@@ -257,7 +275,7 @@ def Check_OTP(request,order_id):
 @login_required
 def Completed_Orders(request):
     shopkeeper_email = request.user.email
-    orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,completed_status=True)
+    orders = Order.objects.filter(shopkeeper_email=shopkeeper_email,completed_status=True).order_by('-date_ordered')
     return render(request,'users/completed_orders.html',{'orders':orders})
 
 @login_required
