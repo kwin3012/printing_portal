@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x^unmg##ywe7s_bz0mcglxd*!!i36gr=#hl3ugd&40z6_b^q$f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -121,6 +123,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = 'media/'
@@ -146,3 +149,6 @@ MESSAGE_TAGS = {
 
 RAZOR_KEY_ID = "rzp_test_urhl6pBK884i2u"
 RAZOR_KEY_SECRET = "EHEJpTmYF6g2iqMrfdvyR9mU"
+
+
+django_heroku.settings(locals())

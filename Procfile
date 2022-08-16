@@ -1,0 +1,1 @@
+web gunicorn printing_portal.wsgi:application --log-file -
