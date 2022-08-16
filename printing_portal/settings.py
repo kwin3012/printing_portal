@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-x^unmg##ywe7s_bz0mcglxd*!!i36gr=#hl3ugd&40z6_b^q$f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['kwin-printing-portal.herokuapp.com']
 
 
 # Application definition
