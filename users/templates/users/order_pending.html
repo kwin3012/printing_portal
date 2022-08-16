@@ -18,6 +18,7 @@
     {% endif %}
     <br>
     <strong>Amount To be Paid : </strong>{{ order.cost }}<br>
+    <a class="btn btn-primary btn-lg" href="{% url 'gateway2' order.id %}" role="button">Pay Now</a>
 </div>
 {% endfor %}
 

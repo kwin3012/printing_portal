@@ -149,7 +149,7 @@ def Place_Order(request):
 
                 order.save()
 
-                return HttpResponseRedirect(reverse('gateway'))
+                return HttpResponseRedirect(reverse('gateway1'))
                 # messages.success(request,f'Order Placed Successfully!')
                 # return redirect('home')
             else:
@@ -162,7 +162,8 @@ def Place_Order(request):
     form = OrderForm()
     return render(request,'users/place_order.html',{'form':form})
 
-def gateway(request):
+@login_required
+def Gateway1(request):
     if request.method == "POST":
         email = request.user.email
         order = Order.objects.filter(user=request.user).last()
@@ -174,7 +175,19 @@ def gateway(request):
         return render(request,'users/payment.html',{'payment':payment,'user':request.user})
     return render(request,'users/payment.html')
 
+@login_required
+def Gateway2(request,order_id):
+    if request.method == "POST":
+        order = Order.objects.filter(id=order_id)
+        cost = order.cost*100
+        client = razorpay.Client(auth = (settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+        payment = client.order.create({'amount':cost, 'currency': 'INR', 'payment_capture':'1'})
+        order.payment_id = payment['id']
+        order.save()
+        return render(request,'users/payment.html',{'payment':payment,'user':request.user})
+    return render(request,'users/payment.html')
 
+@login_required
 @csrf_exempt
 def success(request):
     if request.method == "POST":
