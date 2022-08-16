@@ -18,5 +18,5 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('https://kwin-printing-portal.herokuapp.com/',include("users.urls")),
+    path('',include("users.urls")),
 ]
