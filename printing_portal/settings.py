@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x^unmg##ywe7s_bz0mcglxd*!!i36gr=#hl3ugd&40z6_b^q$f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['kwin-printing-portal.herokuapp.com']
+ALLOWED_HOSTS = ['printingportal.pythonanywhere.com']
 
 
 # Application definition
